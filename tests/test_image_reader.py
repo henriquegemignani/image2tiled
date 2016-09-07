@@ -14,4 +14,5 @@ def test_get_tile(mock_image_open, tilesize, margin, position, result):
     reader = image2tiled.image_reader.ImageReader("myimage.png", tilesize, margin)
 
     assert reader.get_tile(*position) == mock_image.crop.return_value
+    mock_image_open.assert_called_once_with("myimage.png")
     mock_image.crop.assert_called_once_with(result)
