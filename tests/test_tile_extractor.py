@@ -9,4 +9,4 @@ def extractor():
 
 
 def test_extract(extractor, reader_2x2):
-    assert len(extractor.extract(reader_2x2)) == 4
+    assert len(extractor.extract(reader_2x2)) == 12
