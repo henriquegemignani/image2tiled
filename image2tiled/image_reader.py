@@ -16,4 +16,4 @@ class ImageReader:
     @property
     def num_tiles(self):
         actual_tile_size = self.tile_size + self.margin
-        return self.image.width / actual_tile_size, self.image.height / actual_tile_size
+        return int(self.image.width / actual_tile_size), int(self.image.height / actual_tile_size)
