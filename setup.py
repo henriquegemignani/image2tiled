@@ -9,9 +9,12 @@ setup(
     author='Henrique Gemignani',
     author_email='henrique@gemignani.org',
     description='Tool that creates a tiled map based on an image',
-
+    install_requires=[
+        'Pillow',
+    ],
     tests_require=[
         'pytest',
+        'mock',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
