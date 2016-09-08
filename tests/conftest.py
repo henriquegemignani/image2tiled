@@ -14,6 +14,11 @@ def image_4x4():
     return os.path.join(_path, "sample_files", "4x4.png")
 
 
+@pytest.fixture()
+def image_4x4_tiles():
+    return os.path.join(_path, "sample_files", "4x4_tiles.png")
+
+
 @pytest.fixture
 def reader_2x2(image_2x2):
     import image2tiled.image_reader

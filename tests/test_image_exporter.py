@@ -1,6 +1,7 @@
 from mock import patch, call, ANY
 import math
 import pytest
+from PIL import Image
 
 
 class MockImage:
@@ -29,3 +30,11 @@ def test_create(mock_image_new, image_exporter, tile_size, num_images, images_pe
         call(image, ANY)
         for image in images
     ])
+
+
+def test_create_4x4(image_exporter, rotation_detector, extract_results_4x4, image_4x4_tiles):
+    rotation_results = rotation_detector.detect(extract_results_4x4)
+
+    new_image = image_exporter.create(rotation_results.unique_images, 20)
+    tiles_image = Image.open(image_4x4_tiles)
+    assert new_image.tobytes() == tiles_image.tobytes()
