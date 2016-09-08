@@ -41,3 +41,8 @@ def rotation_detector():
 @pytest.fixture()
 def extract_results_2x2(tile_extractor, reader_2x2):
     return tile_extractor.extract(reader_2x2)
+
+
+@pytest.fixture()
+def extract_results_4x4(tile_extractor, reader_4x4):
+    return tile_extractor.extract(reader_4x4)
