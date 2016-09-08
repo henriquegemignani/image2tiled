@@ -36,7 +36,9 @@ class RotationDetector:
                 flips = _create_flips(image)
                 unique_images.append(image)
                 for rot_image, rotation in flips:
-                    old_to_new_mapping[rot_image.tobytes()] = RotatedTile(image, rotation)
+                    rot_bytes = rot_image.tobytes()
+                    if rot_bytes not in old_to_new_mapping:
+                        old_to_new_mapping[rot_bytes] = RotatedTile(image, rotation)
 
         for tile, bytes in extraction_results.by_position.items():
             by_position[tile] = old_to_new_mapping[bytes]
