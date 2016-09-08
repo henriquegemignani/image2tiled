@@ -27,4 +27,9 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
     ],
+    entry_points={
+        'console_scripts': [
+            'image2tiled = image2tiled.cli:main'
+        ],
+    }
 )
