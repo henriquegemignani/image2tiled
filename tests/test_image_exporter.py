@@ -1,17 +1,21 @@
 from mock import patch, call, ANY
 import math
+import pytest
 
 
 class MockImage:
     pass
 
 
+@pytest.mark.parametrize("tile_size, num_images, images_per_row", [
+(8, 6, 4),
+(16, 6, 4),
+(16, 50, 1),
+(16, 1, 50),
+(16, 50, 50),
+])
 @patch("PIL.Image.new")
-def test_create(mock_image_new, image_exporter):
-    tile_size = 8
-    num_images = 6
-    images_per_row = 4
-
+def test_create(mock_image_new, image_exporter, tile_size, num_images, images_per_row):
     images = [MockImage() for _ in range(num_images)]
     images[0].width = tile_size
     images[0].height = tile_size
