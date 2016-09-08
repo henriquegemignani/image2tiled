@@ -18,6 +18,15 @@ def create_parser():
     return parser
 
 
+def save_output(output_directory, map_name, tiled_json, images):
+    for image in images:
+        image.save(os.path.join(output_directory,
+                                image.filename))
+    with open(os.path.join(output_directory,
+                           map_name + ".json"), "w") as output_json_file:
+        json.dump(tiled_json, output_json_file)
+
+
 def handle_args(args):
     reader = ImageReader(args.map_image, args.tile_size)
     extraction_results = TileExtractor().extract(reader)
@@ -35,12 +44,7 @@ def handle_args(args):
     tiled_generator = TiledGenerator(args.tile_size, reader.num_tiles, images_per_row)
     tiled_generator.add_layer(rotation_results, final_image)
     tiled_json = tiled_generator.json()
-
-    final_image.save(os.path.join(args.output_directory,
-                                  final_image.filename))
-    with open(os.path.join(args.output_directory,
-                           file + ".json"), "w") as output_json_file:
-        json.dump(tiled_json, output_json_file)
+    save_output(args.output_directory, file, tiled_json, [final_image])
 
 def main():
     parser = create_parser()
