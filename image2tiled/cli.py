@@ -1,10 +1,12 @@
 import argparse
 import os
 import math
+import json
 from image2tiled.image_reader import ImageReader
 from image2tiled.tile_extractor import TileExtractor
 from image2tiled.rotation_detector import RotationDetector
 from image2tiled.image_exporter import ImageExporter
+from image2tiled.tiled_generator import TiledGenerator
 
 
 def create_parser():
@@ -20,14 +22,25 @@ def handle_args(args):
     reader = ImageReader(args.map_image, args.tile_size)
     extraction_results = TileExtractor().extract(reader)
     rotation_results = RotationDetector().detect(extraction_results)
+    images_per_row = math.floor(args.max_image_size / args.tile_size)
 
     final_image = ImageExporter().create(rotation_results.unique_images,
-                                         math.floor(args.max_image_size / args.tile_size))
+                                         images_per_row)
+    file, ext = os.path.splitext(os.path.basename(args.map_image))
+    final_image.filename = file + "-tilemap" + ext
 
-    file, ext = os.path.splitext(os.path.dirname(args.map_image))
+    assert final_image.width <= args.max_image_size, "Generated image is wider than allowed"
+    assert final_image.height <= args.max_image_size, "Generated image is heigher than allowed"
+
+    tiled_generator = TiledGenerator(args.tile_size, reader.num_tiles, images_per_row)
+    tiled_generator.add_layer(rotation_results, final_image)
+    tiled_json = tiled_generator.json()
+
     final_image.save(os.path.join(args.output_directory,
-                                  file + "-tilemap" + ext))
-
+                                  final_image.filename))
+    with open(os.path.join(args.output_directory,
+                           file + ".json"), "w") as output_json_file:
+        json.dump(tiled_json, output_json_file)
 
 def main():
     parser = create_parser()
