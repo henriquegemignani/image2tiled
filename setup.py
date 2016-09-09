@@ -1,5 +1,14 @@
 from distutils.core import setup
 
+install_requires = [
+    'Pillow',
+]
+
+test_requires = [
+    'pytest',
+    'mock',
+]
+
 setup(
     name='image2tiled',
     version='0.1.0',
@@ -9,14 +18,10 @@ setup(
     author='Henrique Gemignani',
     author_email='henrique@gemignani.org',
     description='Tool that creates a tiled map based on an image',
-    install_requires=[
-        'Pillow',
-    ],
+    install_requires=install_requires,
+    test_requires=test_requires,
     extras_require={
-        'tests': [
-            'pytest',
-            'mock',
-        ],
+        'tests': test_requires,
     },
     classifiers=[
         'Development Status :: 4 - Beta',
