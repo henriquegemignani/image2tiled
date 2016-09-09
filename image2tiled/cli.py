@@ -13,6 +13,7 @@ def create_parser():
     parser.add_argument("--output-directory", default=os.getcwd(), help="The directory to where save the files.")
     parser.add_argument("--max-image-size", type=int, default=2048, help="Generated won't have a dimension bigger than this.")
     parser.add_argument("--tile-size", type=int, required=True, help="The tile size to cut the image with.")
+    parser.add_argument("--no-rotation", dest="rotation", default=True, action='store_false', help="BUDEGA")
     parser.add_argument("map_image", help="The image to cut.")
     return parser
 
@@ -28,8 +29,7 @@ def save_output(output_directory, map_name, tiled_json, images):
 
 def handle_args(args):
     reader = ImageReader(args.map_image, args.tile_size)
-    extraction_results = TileExtractor().extract(reader)
-    rotation_results = TileExtractor().detect(extraction_results)
+    rotation_results = TileExtractor(has_rotations=args.rotation).extract(reader)
     images_per_row = math.floor(args.max_image_size / args.tile_size)
 
     final_image = ImageExporter().create(rotation_results.unique_images,
