@@ -22,7 +22,7 @@ def test_create(mock_image_new, image_exporter, tile_size, num_images, images_pe
     images[0].height = tile_size
 
     new_image = image_exporter.create(images, images_per_row)
-    box = (tile_size*min(images_per_row, num_images), tile_size*math.ceil(num_images / images_per_row))
+    box = (tile_size*min(images_per_row, num_images), tile_size*math.ceil(num_images / float(images_per_row)))
 
     mock_image_new.assert_called_once_with("RGBA", box)
     assert new_image == mock_image_new.return_value

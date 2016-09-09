@@ -7,7 +7,7 @@ class ImageExporter:
         width = images[0].width
         height = images[0].height
         num_columns = min(len(images), tiles_per_row)
-        num_rows = math.ceil(len(images) / num_columns)
+        num_rows = int(math.ceil(len(images) / float(num_columns)))
 
         final_image = Image.new("RGBA", (num_columns * width, num_rows * height))
 
