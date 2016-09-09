@@ -12,10 +12,12 @@ setup(
     install_requires=[
         'Pillow',
     ],
-    tests_require=[
-        'pytest',
-        'mock',
-    ],
+    extras_require={
+        'tests': [
+            'pytest',
+            'mock',
+        ],
+    },
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
