@@ -21,6 +21,7 @@ class TiledGenerator:
 
     def add_layer(self, rotation_results, final_image):
         index_for_image = {i.tobytes(): v for v, i in enumerate(rotation_results.unique_images)}
+
         def encode_data():
             data = []
             for row in range(self.num_rows):

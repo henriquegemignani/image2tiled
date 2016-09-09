@@ -4,7 +4,6 @@ import math
 import json
 from image2tiled.image_reader import ImageReader
 from image2tiled.tile_extractor import TileExtractor
-from image2tiled.rotation_detector import RotationDetector
 from image2tiled.image_exporter import ImageExporter
 from image2tiled.tiled_generator import TiledGenerator
 
@@ -30,7 +29,7 @@ def save_output(output_directory, map_name, tiled_json, images):
 def handle_args(args):
     reader = ImageReader(args.map_image, args.tile_size)
     extraction_results = TileExtractor().extract(reader)
-    rotation_results = RotationDetector().detect(extraction_results)
+    rotation_results = TileExtractor().detect(extraction_results)
     images_per_row = math.floor(args.max_image_size / args.tile_size)
 
     final_image = ImageExporter().create(rotation_results.unique_images,
@@ -45,6 +44,7 @@ def handle_args(args):
     tiled_generator.add_layer(rotation_results, final_image)
     tiled_json = tiled_generator.json()
     save_output(args.output_directory, file, tiled_json, [final_image])
+
 
 def main():
     parser = create_parser()

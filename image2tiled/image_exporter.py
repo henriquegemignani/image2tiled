@@ -1,6 +1,7 @@
 import math
 from PIL import Image
 
+
 class ImageExporter:
     def create(self, images, tiles_per_row):
         assert images, "Writing an empty array of images is invalid"
