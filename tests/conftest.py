@@ -46,13 +46,3 @@ def tile_extractor():
 def image_exporter():
     import image2tiled.image_exporter
     return image2tiled.image_exporter.ImageExporter()
-
-
-@pytest.fixture()
-def extract_results_2x2(tile_extractor, reader_2x2):
-    return tile_extractor.extract(reader_2x2)
-
-
-@pytest.fixture()
-def extract_results_4x4(tile_extractor, reader_4x4):
-    return tile_extractor.extract(reader_4x4)

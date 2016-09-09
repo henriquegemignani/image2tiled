@@ -21,14 +21,16 @@ def _create_flips(image):
 
 
 class TileExtractor:
-    ExtractResults = collections.namedtuple("Results", ["unique_images", "by_position"])
-    DetectResults = collections.namedtuple("Results", ["unique_images", "by_position"])
+    Results = collections.namedtuple("Results", ["unique_images", "by_position"])
+
+    def __init__(self, has_rotations=True):
+        pass
 
     def extract(self, reader):
         num_cols, num_rows = reader.num_tiles
 
         unique_images = collections.OrderedDict()
-        by_position = {}
+        bytes_by_position = {}
 
         for row in range(num_rows):
             for col in range(num_cols):
@@ -36,26 +38,22 @@ class TileExtractor:
                 image_bytes = image.tobytes()
                 if image_bytes not in unique_images:
                     unique_images[image_bytes] = image
-                by_position[(col, row)] = image_bytes
+                bytes_by_position[(col, row)] = image_bytes
 
-        return TileExtractor.ExtractResults(unique_images, by_position)
-
-    def detect(self, extraction_results):
-        unique_images = []
+        unique_tiles = []
         by_position = {}
-
         old_to_new_mapping = {}
-        for image_bytes, image in extraction_results.unique_images.items():
+        for image_bytes, image in unique_images.items():
             if image_bytes not in old_to_new_mapping:
                 # This image is a new one
                 flips = _create_flips(image)
-                unique_images.append(image)
+                unique_tiles.append(image)
                 for rot_image, rotation in flips:
                     rot_bytes = rot_image.tobytes()
                     if rot_bytes not in old_to_new_mapping:
                         old_to_new_mapping[rot_bytes] = RotatedTile(image, rotation)
 
-        for tile, bytes in extraction_results.by_position.items():
+        for tile, bytes in bytes_by_position.items():
             by_position[tile] = old_to_new_mapping[bytes]
 
-        return TileExtractor.DetectResults(unique_images, by_position)
+        return TileExtractor.Results(unique_tiles, by_position)

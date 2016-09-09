@@ -2,8 +2,8 @@ import image2tiled.tiled_generator
 import json
 
 
-def test_json(image_exporter, tile_extractor, extract_results_4x4, reader_4x4, tiled_4x4):
-    rotation_results = tile_extractor.detect(extract_results_4x4)
+def test_json(image_exporter, tile_extractor, reader_4x4, tiled_4x4):
+    rotation_results = tile_extractor.extract(reader_4x4)
     new_image = image_exporter.create(rotation_results.unique_images, 20)
     new_image.filename = "4x4_tiles.png"
     with open(tiled_4x4) as tiled_4x4_file:
