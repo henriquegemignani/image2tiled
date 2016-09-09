@@ -15,7 +15,7 @@ class ImageExporter:
         current_row = 0
         current_column = 0
         for image in images:
-            if current_column > tiles_per_row:
+            if current_column >= tiles_per_row:
                 current_row += 1
                 current_column = 0
             final_image.paste(image, (current_column * width, current_row * height,
