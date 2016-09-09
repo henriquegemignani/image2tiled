@@ -32,8 +32,8 @@ def test_create(mock_image_new, image_exporter, tile_size, num_images, images_pe
     ])
 
 
-def test_create_4x4(image_exporter, tile_extractor, extract_results_4x4, image_4x4_tiles):
-    rotation_results = tile_extractor.detect(extract_results_4x4)
+def test_create_4x4(image_exporter, tile_extractor, reader_4x4, image_4x4_tiles):
+    rotation_results = tile_extractor.extract(reader_4x4)
 
     new_image = image_exporter.create(rotation_results.unique_images, 20)
     tiles_image = Image.open(image_4x4_tiles)
