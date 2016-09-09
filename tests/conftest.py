@@ -43,6 +43,12 @@ def tile_extractor():
 
 
 @pytest.fixture()
+def tile_extractor_no_rot():
+    import image2tiled.tile_extractor
+    return image2tiled.tile_extractor.TileExtractor(has_rotations=False)
+
+
+@pytest.fixture()
 def image_exporter():
     import image2tiled.image_exporter
     return image2tiled.image_exporter.ImageExporter()
