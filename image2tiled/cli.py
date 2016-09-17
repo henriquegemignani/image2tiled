@@ -55,7 +55,7 @@ def handle_args(args):
         assert final_image.width <= args.max_image_size, "Generated image is wider than allowed"
         assert final_image.height <= args.max_image_size, "Generated image is higher than allowed"
         generated_images.append(final_image)
-        tiled_generator.add_layer(rotation_results, final_image)
+        tiled_generator.add_layer(rotation_results, final_image, layer_name=image_filename)
 
     tiled_json = tiled_generator.json()
     save_output(args.output_directory, "map", tiled_json, generated_images )
