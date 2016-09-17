@@ -1,4 +1,5 @@
 import os
+
 from PIL import Image
 
 FLIPPED_HORIZONTALLY_FLAG = 0x80000000
@@ -35,7 +36,7 @@ class TiledGenerator:
                     index |= ROTATION_FLAGS[rotation_flip]
                     data.append(index)
             return data
-        self.layers.append({
+        self.layers.insert(0, {
             "data": encode_data(),
             "height": self.num_rows,
             "name": "Tile Layer {}".format(1 + len(self.layers)),
