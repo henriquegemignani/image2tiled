@@ -32,9 +32,9 @@ def save_output(output_directory, map_name, tiled_json, images):
 
 def handle_args(args):
     tile_extractor = TileExtractor(has_rotations=args.rotation)
-    images_per_row = math.floor(args.max_image_size / args.tile_size)
 
     num_tiles = ImageReader(args.layers[0], args.tile_size).num_tiles
+    images_per_row = int(math.ceil(math.sqrt(num_tiles)))
     tiled_generator = TiledGenerator(args.tile_size, num_tiles, images_per_row)
 
     generated_images = []
@@ -51,7 +51,7 @@ def handle_args(args):
         final_image.filename = image_filename + "-tilemap" + ext
 
         assert final_image.width <= args.max_image_size, "Generated image is wider than allowed"
-        assert final_image.height <= args.max_image_size, "Generated image is heigher than allowed"
+        assert final_image.height <= args.max_image_size, "Generated image is higher than allowed"
         generated_images.append(final_image)
         tiled_generator.add_layer(rotation_results, final_image)
 
