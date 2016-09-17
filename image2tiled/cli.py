@@ -11,10 +11,12 @@ from image2tiled.tiled_generator import TiledGenerator
 
 def create_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output-directory", default=os.getcwd(), help="The directory to where save the files.")
+    parser.add_argument("--output-directory", "-o", default=os.getcwd(),
+                        help="The directory to where save the files.")
     parser.add_argument("--max-image-size", type=int, default=2048,
                         help="Generated won't have a dimension bigger than this.")
-    parser.add_argument("--tile-size", type=int, required=True, help="The tile size to cut the image with.")
+    parser.add_argument("--tile-size", type=int, required=True,
+                        help="The tile size to cut the image with.")
     parser.add_argument("--no-rotation", dest="rotation", default=True, action='store_false',
                         help="Don't generate rotated or flipped tiles.")
     parser.add_argument("layers", nargs='+', help="The image to cut.")
