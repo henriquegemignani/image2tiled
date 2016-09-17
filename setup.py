@@ -6,6 +6,7 @@ install_requires = [
 
 test_requires = [
     'pytest',
+    'pytest-flake8',
     'mock',
 ]
 

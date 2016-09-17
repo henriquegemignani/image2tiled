@@ -62,7 +62,7 @@ def handle_args(args):
                                   layer_name=image_filename)
 
     tiled_json = tiled_generator.json()
-    save_output(args.output_directory, "map", tiled_json, generated_images )
+    save_output(args.output_directory, "map", tiled_json, generated_images)
 
 
 def main():

@@ -31,7 +31,6 @@ class TiledGenerator:
                 for column in range(self.num_columns):
                     rotated_tile = rotation_results.by_position[(column, row)]
                     index = self.next_gid + index_for_image[rotated_tile.image.tobytes()]
-                    # TODO: add rotation flags
                     horizontal_flip, rotation_flip = rotated_tile.rotation
                     if horizontal_flip is not None:
                         index |= FLIPPED_HORIZONTALLY_FLAG

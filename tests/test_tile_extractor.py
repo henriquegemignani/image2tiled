@@ -31,7 +31,7 @@ def test_detect_4x4(tile_extractor, reader_4x4):
     assert rotation_results.by_position[(0, 1)].image.tobytes() == rotation_results.by_position[(1, 0)].image.tobytes()
 
 
-def test_detect_4x4(tile_extractor_no_rot, reader_4x4):
+def test_detect_4x4_no_rot(tile_extractor_no_rot, reader_4x4):
     rotation_results = tile_extractor_no_rot.extract(reader_4x4)
     assert len(rotation_results.unique_images) == 14
     assert len(rotation_results.by_position) == 16

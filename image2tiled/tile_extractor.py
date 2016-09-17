@@ -27,7 +27,8 @@ class TileExtractor:
         for horizontal_flip in self.horizontal_flips:
             h_flip_image = _flip(image, horizontal_flip)
             for rotation_flip in self.rotation_flips:
-                results.append((_flip(h_flip_image, rotation_flip), (horizontal_flip, rotation_flip)))
+                results.append((_flip(h_flip_image, rotation_flip),
+                                (horizontal_flip, rotation_flip)))
         return results
 
     def extract(self, reader):

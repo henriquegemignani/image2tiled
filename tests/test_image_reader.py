@@ -4,10 +4,10 @@ import image2tiled.image_reader
 
 
 @pytest.mark.parametrize("tile_size, margin, position, result", [
-(7, 0, (0, 0), (0, 0, 7, 7)),
-(9, 0, (0, 0), (0, 0, 9, 9)),
-(7, 1, (0, 0), (1, 1, 8, 8)),
-(7, 2, (12, 12), (110, 110, 117, 117)),
+    (7, 0, (0, 0), (0, 0, 7, 7)),
+    (9, 0, (0, 0), (0, 0, 9, 9)),
+    (7, 1, (0, 0), (1, 1, 8, 8)),
+    (7, 2, (12, 12), (110, 110, 117, 117)),
 ])
 @patch("PIL.Image.open")
 def test_get_tile(mock_image_open, tile_size, margin, position, result):

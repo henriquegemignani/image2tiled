@@ -19,7 +19,7 @@ class ImageExporter:
                 current_row += 1
                 current_column = 0
             final_image.paste(image, (current_column * width, current_row * height,
-                                       (current_column + 1) * width, (current_row + 1) * height))
+                                      (current_column + 1) * width, (current_row + 1) * height))
             current_column += 1
 
         return final_image
