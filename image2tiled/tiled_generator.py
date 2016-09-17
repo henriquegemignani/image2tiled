@@ -12,15 +12,14 @@ ROTATION_FLAGS = {
 
 
 class TiledGenerator:
-    def __init__(self, tile_size, num_tiles, tiles_per_row=8):
+    def __init__(self, tile_size, num_tiles):
         self.layers = []
         self.tile_sets = []
         self.next_gid = 1
         self.tile_size = tile_size
         self.num_columns, self.num_rows = num_tiles
-        self.tiles_per_row = tiles_per_row
 
-    def add_layer(self, rotation_results, final_image, layer_name=None):
+    def add_layer(self, rotation_results, final_image, tiles_per_row=8, layer_name=None):
         index_for_image = {i.tobytes(): v for v, i in enumerate(rotation_results.unique_images)}
 
         if layer_name is None:
@@ -51,7 +50,7 @@ class TiledGenerator:
             "y": 0
         })
         self.tile_sets.append({
-            "columns": self.tiles_per_row,
+            "columns": tiles_per_row,
             "firstgid": self.next_gid,
             "image": final_image.filename,
             "imageheight": final_image.height,

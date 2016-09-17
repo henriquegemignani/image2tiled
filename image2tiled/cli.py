@@ -36,17 +36,19 @@ def handle_args(args):
     tile_extractor = TileExtractor(has_rotations=args.rotation)
 
     num_tiles = ImageReader(args.layers[0], args.tile_size).num_tiles
-    images_per_row = int(math.ceil(math.sqrt(num_tiles)))
-    tiled_generator = TiledGenerator(args.tile_size, num_tiles, images_per_row)
+    tiled_generator = TiledGenerator(args.tile_size, num_tiles)
 
     generated_images = []
     for layer_image in args.layers:
         reader = ImageReader(layer_image, args.tile_size)
 
-        assert num_tiles == reader.num_tiles, "Layer {} has {} tiles, instead of expected {}".format(layer_image,
-                                                                                                     reader.num_tiles,
-                                                                                                     num_tiles)
+        assert num_tiles == reader.num_tiles,\
+            "Layer {} has {} tiles, instead of expected {}".format(layer_image,
+                                                                   reader.num_tiles,
+                                                                   num_tiles)
+
         rotation_results = tile_extractor.extract(reader)
+        images_per_row = int(math.ceil(math.sqrt(len(rotation_results.unique_images))))
         final_image = ImageExporter().create(rotation_results.unique_images,
                                              images_per_row)
         image_filename, ext = os.path.splitext(os.path.basename(layer_image))
@@ -55,7 +57,9 @@ def handle_args(args):
         assert final_image.width <= args.max_image_size, "Generated image is wider than allowed"
         assert final_image.height <= args.max_image_size, "Generated image is higher than allowed"
         generated_images.append(final_image)
-        tiled_generator.add_layer(rotation_results, final_image, layer_name=image_filename)
+        tiled_generator.add_layer(rotation_results, final_image,
+                                  tiles_per_row=images_per_row,
+                                  layer_name=image_filename)
 
     tiled_json = tiled_generator.json()
     save_output(args.output_directory, "map", tiled_json, generated_images )

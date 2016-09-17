@@ -1,7 +1,9 @@
-import image2tiled.tiled_generator
 import json
 import os
+
 import pytest
+
+import image2tiled.tiled_generator
 
 _path = os.path.dirname(os.path.abspath(__file__))
 
@@ -14,16 +16,15 @@ def test_json(image_exporter, tile_extractor, reader_4x4, tiled_4x4):
         tiled_4x4_data = json.load(tiled_4x4_file)
 
     tiled = image2tiled.tiled_generator.TiledGenerator(reader_4x4.tile_size,
-                                                       reader_4x4.num_tiles,
-                                                       tiles_per_row=6)
-    tiled.add_layer(rotation_results, new_image)
+                                                       reader_4x4.num_tiles)
+    tiled.add_layer(rotation_results, new_image, tiles_per_row=6)
     assert tiled.json() == tiled_4x4_data
 
 
 @pytest.mark.parametrize("filename", [
-"example_4_small1",
-"example_4_small2",
-"example_4_original",
+    "example_4_small1",
+    "example_4_small2",
+    "example_4_original",
 ])
 def test_json_full_16x16(image_exporter, tile_extractor, filename):
     import image2tiled.image_reader
@@ -37,7 +38,6 @@ def test_json_full_16x16(image_exporter, tile_extractor, filename):
         tiled_data = json.load(tiled_file)
 
     tiled = image2tiled.tiled_generator.TiledGenerator(reader.tile_size,
-                                                       reader.num_tiles,
-                                                       tiles_per_row=images_per_row)
-    tiled.add_layer(results, new_image)
+                                                       reader.num_tiles)
+    tiled.add_layer(results, new_image, tiles_per_row=images_per_row)
     assert tiled.json() == tiled_data
