@@ -17,7 +17,7 @@ def create_parser():
     parser.add_argument("--tile-size", type=int, required=True, help="The tile size to cut the image with.")
     parser.add_argument("--no-rotation", dest="rotation", default=True, action='store_false',
                         help="Don't generate rotated or flipped tiles.")
-    parser.add_argument("map_image", help="The image to cut.")
+    parser.add_argument("layers", nargs='+', help="The image to cut.")
     return parser
 
 
@@ -31,22 +31,32 @@ def save_output(output_directory, map_name, tiled_json, images):
 
 
 def handle_args(args):
-    reader = ImageReader(args.map_image, args.tile_size)
-    rotation_results = TileExtractor(has_rotations=args.rotation).extract(reader)
+    tile_extractor = TileExtractor(has_rotations=args.rotation)
     images_per_row = math.floor(args.max_image_size / args.tile_size)
 
-    final_image = ImageExporter().create(rotation_results.unique_images,
-                                         images_per_row)
-    file, ext = os.path.splitext(os.path.basename(args.map_image))
-    final_image.filename = file + "-tilemap" + ext
+    num_tiles = ImageReader(args.layers[0], args.tile_size).num_tiles
+    tiled_generator = TiledGenerator(args.tile_size, num_tiles, images_per_row)
 
-    assert final_image.width <= args.max_image_size, "Generated image is wider than allowed"
-    assert final_image.height <= args.max_image_size, "Generated image is heigher than allowed"
+    generated_images = []
+    for layer_image in args.layers:
+        reader = ImageReader(layer_image, args.tile_size)
 
-    tiled_generator = TiledGenerator(args.tile_size, reader.num_tiles, images_per_row)
-    tiled_generator.add_layer(rotation_results, final_image)
+        assert num_tiles == reader.num_tiles, "Layer {} has {} tiles, instead of expected {}".format(layer_image,
+                                                                                                     reader.num_tiles,
+                                                                                                     num_tiles)
+        rotation_results = tile_extractor.extract(reader)
+        final_image = ImageExporter().create(rotation_results.unique_images,
+                                             images_per_row)
+        image_filename, ext = os.path.splitext(os.path.basename(layer_image))
+        final_image.filename = image_filename + "-tilemap" + ext
+
+        assert final_image.width <= args.max_image_size, "Generated image is wider than allowed"
+        assert final_image.height <= args.max_image_size, "Generated image is heigher than allowed"
+        generated_images.append(final_image)
+        tiled_generator.add_layer(rotation_results, final_image)
+
     tiled_json = tiled_generator.json()
-    save_output(args.output_directory, file, tiled_json, [final_image])
+    save_output(args.output_directory, "map", tiled_json, generated_images )
 
 
 def main():
