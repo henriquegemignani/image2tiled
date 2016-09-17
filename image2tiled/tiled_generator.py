@@ -20,8 +20,11 @@ class TiledGenerator:
         self.num_columns, self.num_rows = num_tiles
         self.tiles_per_row = tiles_per_row
 
-    def add_layer(self, rotation_results, final_image):
+    def add_layer(self, rotation_results, final_image, layer_name=None):
         index_for_image = {i.tobytes(): v for v, i in enumerate(rotation_results.unique_images)}
+
+        if layer_name is None:
+            layer_name = "Tile Layer {}".format(1 + len(self.layers))
 
         def encode_data():
             data = []
@@ -39,7 +42,7 @@ class TiledGenerator:
         self.layers.insert(0, {
             "data": encode_data(),
             "height": self.num_rows,
-            "name": "Tile Layer {}".format(1 + len(self.layers)),
+            "name": layer_name,
             "opacity": 1,
             "type": "tilelayer",
             "visible": True,
